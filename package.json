@@ -1,0 +1,26 @@
+{
+  "name": "probableforemanussd",
+  "version": "1.0.0",
+  "description": "ussd application for verification and disbursing stuff",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ej-leone/probableForemanUssd.git"
+  },
+  "keywords": [
+    "ussd",
+    "node"
+  ],
+  "author": "Ej-leone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ej-leone/probableForemanUssd/issues"
+  },
+  "homepage": "https://github.com/Ej-leone/probableForemanUssd#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
