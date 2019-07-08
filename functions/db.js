@@ -1,8 +1,8 @@
-const foremen =  [
+var foremen =  [
     {
       id: 1,
       name: "Foreman 1",
-      msisdn: "",
+      msisdn: "254726504619",
       pin:"1234"
     },
     {
@@ -20,6 +20,9 @@ const foremen =  [
 
 ];
 
-const Orders =[
+var Orders =[
 
 ]
+
+module.exports.foremen=foremen
+module.exports.Orders=Orders

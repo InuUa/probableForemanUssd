@@ -6,6 +6,8 @@ const admin = require('firebase-admin')
 //  credential: admin.credential.cert(serviceAccount),
 //  storageBucket: 'guruvest-website.appspot.com/'
 //})
+admin.initializeApp(functions.config().firebase);
+
 
 const verify = require('./serv')
 

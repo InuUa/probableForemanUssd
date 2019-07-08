@@ -1,22 +1,32 @@
 const functions = require('firebase-functions')
-//var GuruvestMobileApi = require('guruvest_mobile_api')
 const admin = require('firebase-admin')
 const express = require('express')
 const cors = require('cors')
 //const validateFirebaseIdToken = require('../utils/auth.js')
 const cookieParser = require('cookie-parser')()
-//const app = express()
-//import express from 'express';
+
+
 const foremen =require('./db')
 const Orders = require('./db')
-//import {foremen ,Orders } from './db';
-
+const Getuser  =require( './util')
+const MapPin =require( './util')
 const app = express();
 app.use(cookieParser)
+let db = admin.firestore();
+
+
+
+
+
+
+
+
+
+
 
 const options = {
     apiKey: 'YOUR_API_KEY',         // use your sandbox app API key for development in the test environment
-    username: 'YOUR_USERNAME',      // use 'sandbox' for development in the test environment
+    username: 'sandbox',      // use 'sandbox' for development in the test environment
 };
 const AfricasTalking = require('africastalking')(options);
 
@@ -34,7 +44,7 @@ app.post('/', (req, res) => {
 
   if (text === '') {
     //et check = CheckUser(phoneNumber)
-    let user = Getuser(phoneNumber)
+    let user = Getuser.Getuser(phoneNumber)
     console.log(user)
 
     if (user) {
@@ -115,13 +125,27 @@ app.post('/', (req, res) => {
 })
 
 
-
-
 app.post('/sms',(req, res) =>{
 
+  let date = req.body.date;
+  let from = req.body.from;
+  let linkId = req.body.linkId;
+  let text = req.body.text;
+  let to  = req.body.to;
+  let networkCode = req.body.networkCode;
+  console.log(Getuser.Getuser)
+  let user = Getuser.Getuser(from)
+
+  if (user) {
+    console.log(user+ text);
+    
+  } else {
+    console.log("message from non users");
+    
+  }
+
+
 })
-
-
 
 
 
@@ -134,5 +158,5 @@ let myfunction = (req, res) => {
   app(req, res)
 }
 
-// Expose Express API as a single Cloud Function:
+
 module.exports = functions.https.onRequest(myfunction)
