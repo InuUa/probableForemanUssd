@@ -16,14 +16,6 @@ let db = admin.firestore();
 
 
 
-
-
-
-
-
-
-
-
 const options = {
     apiKey: 'YOUR_API_KEY',         // use your sandbox app API key for development in the test environment
     username: 'sandbox',      // use 'sandbox' for development in the test environment
@@ -85,7 +77,15 @@ app.post('/', (req, res) => {
     verymessage: "Confirm to inuua That  you are picking y replying with one"
     }
     // Send message and capture the response or error
-    sms.send(options).then( response => { console.log(response);}).catch( error => {    console.log(error);});
+    sms.send(options)
+    .then( function (response) {
+       console.log(response) 
+       return response
+      })
+    .catch( function (error) {  
+        console.log(error);
+        return error
+      });
 
   }
   else if (length === 5 && txt[0] === '1') {
@@ -137,11 +137,12 @@ app.post('/sms',(req, res) =>{
   let user = Getuser.Getuser(from)
 
   if (user) {
-    console.log(user+ text);
-    
+    console.log(user);
+    console.log(text);
+    res.status(200).send(message)
   } else {
     console.log("message from non users");
-    
+    res.status(200).send(message)
   }
 
 

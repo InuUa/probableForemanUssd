@@ -22,10 +22,10 @@ var CheckUser = function (Phone)  {
 
 var  Getuser =function (Phone)  {
     return foremen.find(function (foreman) {
-        console.log(foreman.msisdn);
+        console.log(foreman.msisdn === Phone);
         console.log("bb"+Phone);
         
-        return foreman.msisdn == Phone  
+        return foreman.msisdn === Phone  
     }
         )
 }
