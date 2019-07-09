@@ -6,23 +6,27 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')()
 
 
-const foremen =require('./db')
+const foremen = require('./db')
 const Orders = require('./db')
-const Getuser  =require( './util')
-const MapPin =require( './util')
+const Getuser = require('./util')
+const MapPin = require('./util')
 const app = express();
 app.use(cookieParser)
 let db = admin.firestore();
 
-
-
 const options = {
-    apiKey: 'YOUR_API_KEY',         // use your sandbox app API key for development in the test environment
-    username: 'sandbox',      // use 'sandbox' for development in the test environment
+  apiKey: '8a405df281daf796bf3b8394c9addf67e113b3f9655040dd65652fb8aa3e963c',// use your sandbox app API key for development in the test environment
+  username: 'sandbox',      // use 'sandbox' for development in the test environment
 };
 const AfricasTalking = require('africastalking')(options);
+// Initialize a service e.g. SMS
+sms = AfricasTalking.SMS
 
 app.post('/', (req, res) => {
+  if (!req.body.sessionId || !req.body.serviceCode || !req.body.phoneNumber || !req.body.text) {
+    res.status(422).send({ "message": "Error in messages" })
+  }
+
   let sessionId = req.body.sessionId;
   let serviceCode = req.body.serviceCode;
   let phoneNumber = req.body.phoneNumber;
@@ -30,21 +34,21 @@ app.post('/', (req, res) => {
 
   var length = text.split("*").length
   var txt = text.split("*")
-  //console.log(text)
+  console.log(text)
   console.log(length)
   let message = ""
 
   if (text === '') {
     //et check = CheckUser(phoneNumber)
     let user = Getuser.Getuser(phoneNumber)
-    console.log(user)
+
 
     if (user) {
 
       message = `CON Hi ${user.name} Welcome to Inuua Diburse.   \n`
       message += '1: Disburse Stock\n';
       message += '2: Verify Delivery\n';
-      console.log(text)
+
     }
     else {
       message = `END We dont seem to have your number with us . Kindly contact us `
@@ -60,35 +64,45 @@ app.post('/', (req, res) => {
     // message += '4: Mark device as sold';;
   }
   else if (length === 2 && txt[0] === '1') {
+
+    var tt = Getuser.GetStock()
+
+
     message = 'CON Choose the Stock you want to disburse  \n';
     message += '1: Cement Bag \n';
     message += '2: Window Panes\n';
     message += '3: Sand\n';
+
+
     // message += '4: Mark device as sold';;
   }
   else if (length === 3 && txt[0] === '1') {
+
     message = 'CON Enter the Amount you want to disburse   \n';
   }
   else if (length === 4 && txt[0] === '1') {
-    message = 'CON Enter the name of the Labourer you want to disburse to  \n';
+    message = 'CON Enter the Phone of the Labourer you want to disburse to  \n';
 
+    console.log("3::" + text[3])
     const options = {
-    to: ['+254711XXXYYY', '+254733YYYZZZ'],
-    verymessage: "Confirm to inuua That  you are picking y replying with one"
+      to: ['+254726504619'],
+      message: "Confirm to inuua That  you are picking cement  20 replying with following code"
     }
     // Send message and capture the response or error
     sms.send(options)
-    .then( function (response) {
-       console.log(response) 
-       return response
+      .then(function (response) {
+        console.log(response)
+        return response
       })
-    .catch( function (error) {  
+      .catch(function (error) {
         console.log(error);
         return error
       });
 
   }
   else if (length === 5 && txt[0] === '1') {
+    console.log("4::" + text[4])
+
     message = 'CON Confirm disburse by Entering Pin \n';
   }
   else if (length === 6 && txt[0] === '1') {
@@ -125,13 +139,16 @@ app.post('/', (req, res) => {
 })
 
 
-app.post('/sms',(req, res) =>{
+app.post('/sms', (req, res) => {
 
+  if (!req.body.from || !req.body.text || !req.body.networkCode || !req.body.to) {
+    res.status(422).send({ "message": "Error in the body" })
+  }
   let date = req.body.date;
   let from = req.body.from;
   let linkId = req.body.linkId;
   let text = req.body.text;
-  let to  = req.body.to;
+  let to = req.body.to;
   let networkCode = req.body.networkCode;
   console.log(Getuser.Getuser)
   let user = Getuser.Getuser(from)
