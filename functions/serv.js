@@ -13,17 +13,20 @@ const MapPin = require('./util')
 const app = express();
 app.use(cookieParser)
 let db = admin.firestore();
-
+//const options = {
+//  apiKey: '8a405df281daf796bf3b8394c9addf67e113b3f9655040dd65652fb8aa3e963c',// use your sandbox app API key for development in the test environment
+//  username: 'sandbox',      // use 'sandbox' for development in the test environment
+//};
 const options = {
-  apiKey: '8a405df281daf796bf3b8394c9addf67e113b3f9655040dd65652fb8aa3e963c',// use your sandbox app API key for development in the test environment
-  username: 'sandbox',      // use 'sandbox' for development in the test environment
+  apiKey: '6ce00c96f9141b6d84b23d316a7d9ef3686873dc866aba12cc043d082cd998ac',// use your sandbox app API key for development in the test environment
+  username: 'Inuua Tujenge',      // use 'sandbox' for development in the test environment
 };
 const AfricasTalking = require('africastalking')(options);
-// Initialize a service e.g. SMS
-sms = AfricasTalking.SMS
+const sms = AfricasTalking.SMS;
+
 
 app.post('/', (req, res) => {
-  if (!req.body.sessionId || !req.body.serviceCode || !req.body.phoneNumber || !req.body.text) {
+  if (!req.body.sessionId || !req.body.serviceCode || !req.body.phoneNumber) {
     res.status(422).send({ "message": "Error in messages" })
   }
 
@@ -32,14 +35,15 @@ app.post('/', (req, res) => {
   let phoneNumber = req.body.phoneNumber;
   let text = req.body.text;
 
+  Getuser.SendSms("PHONE")
+
   var length = text.split("*").length
   var txt = text.split("*")
-  console.log(text)
-  console.log(length)
+
   let message = ""
 
   if (text === '') {
-    //et check = CheckUser(phoneNumber)
+
     let user = Getuser.Getuser(phoneNumber)
 
 
@@ -66,7 +70,7 @@ app.post('/', (req, res) => {
   else if (length === 2 && txt[0] === '1') {
 
     var tt = Getuser.GetStock()
-
+    //console.log(tt)
 
     message = 'CON Choose the Stock you want to disburse  \n';
     message += '1: Cement Bag \n';
@@ -83,25 +87,11 @@ app.post('/', (req, res) => {
   else if (length === 4 && txt[0] === '1') {
     message = 'CON Enter the Phone of the Labourer you want to disburse to  \n';
 
-    console.log("3::" + text[3])
-    const options = {
-      to: ['+254726504619'],
-      message: "Confirm to inuua That  you are picking cement  20 replying with following code"
-    }
-    // Send message and capture the response or error
-    sms.send(options)
-      .then(function (response) {
-        console.log(response)
-        return response
-      })
-      .catch(function (error) {
-        console.log(error);
-        return error
-      });
+
 
   }
   else if (length === 5 && txt[0] === '1') {
-    console.log("4::" + text[4])
+    //console.log("4::" + text[4])
 
     message = 'CON Confirm disburse by Entering Pin \n';
   }
@@ -132,16 +122,33 @@ app.post('/', (req, res) => {
   }
 
 
-  console.log(message)
+  //console.log(message)
+  const option = {
+    to: ['+254726504619'],
+    message: "Testing Confirm to inuua That  you are picking cement  20 replying with following code"
+  }
 
 
-  res.status(200).send(message)
+  // Send message and capture the response or error
+  sms.send(option)
+    .then(function (response) {
+      console.log(response)
+      return response
+    })
+    .catch(function (error) {
+      console.log(error);
+      return error
+    });
+
+
+  //res.status(200).send(message)
 })
 
 
 app.post('/sms', (req, res) => {
 
-  if (!req.body.from || !req.body.text || !req.body.networkCode || !req.body.to) {
+  console.log(JSON.stringify(req.body))
+  if (!req.body.from || !req.body.text || !req.body.linkId || !req.body.to) {
     res.status(422).send({ "message": "Error in the body" })
   }
   let date = req.body.date;
@@ -150,16 +157,17 @@ app.post('/sms', (req, res) => {
   let text = req.body.text;
   let to = req.body.to;
   let networkCode = req.body.networkCode;
-  console.log(Getuser.Getuser)
+  //console.log(Getuser.Getuser)
   let user = Getuser.Getuser(from)
 
   if (user) {
-    console.log(user);
-    console.log(text);
-    res.status(200).send(message)
+
+    Getuser.FindTrans(text, user.msisdn)
+
+    res.status(200).send("")
   } else {
-    console.log("message from non users");
-    res.status(200).send(message)
+    //console.log("message from non users");
+    res.status(200).send("we good hommie,  i will take from here")
   }
 
 

@@ -1,11 +1,19 @@
 //import { foremen, Orders } from './db';
 const fore = require('./db')
+const fetch = require('node-fetch');
 const Orders = require('./db')
 const admin = require('firebase-admin')
 let db = admin.firestore();
+const options = {
+    apiKey: '8a405df281daf796bf3b8394c9addf67e113b3f9655040dd65652fb8aa3e963c',// use your sandbox app API key for development in the test environment
+    username: 'sandbox',      // use 'sandbox' for development in the test environment
+};
+const AfricasTalking = require('africastalking')(options);
+const sms = AfricasTalking.SMS;
 
-//const admin = require('firebase-admin')
-//let db = admin.firestore();
+
+
+
 
 var foremen = fore.foremen
 
@@ -24,9 +32,6 @@ var CheckUser = function (Phone) {
 
 var Getuser = function (Phone) {
     return foremen.find(function (foreman) {
-        console.log(foreman.msisdn === Phone);
-        console.log("bb" + Phone);
-
         return foreman.msisdn === Phone
     }
     )
@@ -62,12 +67,43 @@ var UpdateTrans = function (id, data) {
 }
 
 var GetStock = function () {
-    db.collection("Stock")
-        .doc()
+    return db.collection("Stock")
         .get()
         .then(p => console.log(p))
         .catch(e => console.log(e))
 }
+/* headers: new Headers({
+            'Content-Type': 'application/json'
+        })*/
+
+
+var SendSms = function (phone) {
+    // Initialize a service e.g. SMS
+    console.log("Tried to send sms")
+    //console.log(sms.send(options));
+
+    const option = {
+        to: ['+254726504619'],
+        message: "Testing Confirm to inuua That  you are picking cement  20 replying with following code"
+    }
+
+
+    // Send message and capture the response or error
+    sms.send(option)
+        .then(function (response) {
+            console.log(response)
+            return response
+        })
+        .catch(function (error) {
+            console.log(error);
+            return error
+        });
+}
+
+var FindTrans = function (code, phone) {
+    console.log(phone + "::" + code)
+}
+
 
 
 module.exports.CheckUser = CheckUser
@@ -76,3 +112,5 @@ module.exports.MapPin = MapPin
 module.exports.AddTransaction = AddTransaction
 module.exports.UpdateTrans = UpdateTrans
 module.exports.GetStock = GetStock
+module.exports.SendSms = SendSms
+module.exports.FindTrans = FindTrans

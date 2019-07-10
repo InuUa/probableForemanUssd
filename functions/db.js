@@ -8,7 +8,7 @@ var foremen = [
   {
     id: 2,
     name: "Foreman  2",
-    msisdn: "",
+    msisdn: "+254726084248",
     pin: "1234"
   },
   {

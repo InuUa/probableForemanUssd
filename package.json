@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "babel app --out-dir functions --copy-files --ignore functions/node_modules"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "rimraf": "^2.6.3"
+  }
+}
