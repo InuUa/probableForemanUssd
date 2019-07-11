@@ -13,14 +13,14 @@ const MapPin = require('./util')
 const app = express();
 app.use(cookieParser)
 let db = admin.firestore();
-//const options = {
-//  apiKey: '8a405df281daf796bf3b8394c9addf67e113b3f9655040dd65652fb8aa3e963c',// use your sandbox app API key for development in the test environment
-//  username: 'sandbox',      // use 'sandbox' for development in the test environment
-//};
 const options = {
-  apiKey: '6ce00c96f9141b6d84b23d316a7d9ef3686873dc866aba12cc043d082cd998ac',// use your sandbox app API key for development in the test environment
-  username: 'Inuua Tujenge',      // use 'sandbox' for development in the test environment
+  apiKey: '080101f8341ad3185d5ffb60989270c61b1b4fc4b29a372a36fe0e9e76f73a76',// use your sandbox app API key for development in the test environment
+  username: 'sandbox',      // use 'sandbox' for development in the test environment
 };
+//const options = {
+//  apiKey: '6ce00c96f9141b6d84b23d316a7d9ef3686873dc866aba12cc043d082cd998ac',// use your sandbox app API key for development in the test environment
+//  username: 'Inuua Tujenge',      // use 'sandbox' for development in the test environment
+//};
 const AfricasTalking = require('africastalking')(options);
 const sms = AfricasTalking.SMS;
 
@@ -123,25 +123,10 @@ app.post('/', (req, res) => {
 
 
   //console.log(message)
-  const option = {
-    to: ['+254726504619'],
-    message: "Testing Confirm to inuua That  you are picking cement  20 replying with following code"
-  }
 
 
-  // Send message and capture the response or error
-  sms.send(option)
-    .then(function (response) {
-      console.log(response)
-      return response
-    })
-    .catch(function (error) {
-      console.log(error);
-      return error
-    });
 
-
-  //res.status(200).send(message)
+  res.status(200).send(message)
 })
 
 

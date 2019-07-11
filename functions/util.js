@@ -86,18 +86,22 @@ var SendSms = function (phone) {
         to: ['+254726504619'],
         message: "Testing Confirm to inuua That  you are picking cement  20 replying with following code"
     }
-
+    return new Promise(
+        function (res, rej) {
+            sms.send(option)
+                .then(function (response) {
+                    console.log(response)
+                    res(response)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    rej(error)
+                })
+        }
+    )
 
     // Send message and capture the response or error
-    sms.send(option)
-        .then(function (response) {
-            console.log(response)
-            return response
-        })
-        .catch(function (error) {
-            console.log(error);
-            return error
-        });
+
 }
 
 var FindTrans = function (code, phone) {
