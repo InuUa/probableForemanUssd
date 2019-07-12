@@ -1,5 +1,6 @@
 {
   "projects": {
-    "staging": "inuuafirebase"
+    "staging": "inuuafirebase",
+    "default": "inuuafirebase"
   }
 }
