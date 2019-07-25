@@ -7,7 +7,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')()
 //const app = express()
 //import express from 'express';
-const foremen =require('./db')
+const foremen = require('./db')
 const Orders = require('./db')
 //import {foremen ,Orders } from './db';
 
@@ -16,24 +16,51 @@ app.use(cookieParser)
 
 
 
-app.post('/',()=>{
+app.post('/', (req, res) => {
+  if (!req.body.name || !req.body.amount || !req.body.itype || !req.body.measurements) {
+    res.status(422).send({ error: true, message: "Incomplete information" })
+  }
+  else {
+    //Save Stock to Db
+
+  }
+})
+
+app.post("/transaction", () => {
+  if (!req.body.productid || !req.body.amount || !req.body.name || !req.body.time || !req.body.labourer) {
+    res.status(422).send({ error: true, message: "Incomplete information" })
+  }
+  else {
+
+  }
+  //Add Transaction 
+  //if Succesful update Stock
 
 })
 
 //app.put('/'()=>{
 //})
 
-app.get()
+app.get('/', (req, res) => {
+  //Retreive the Stock and current amounnt
+  res.status(200).send({ error: false, message: [] })
+})
+
+app.get('/transaction', (req, res) => {
+  //Retreive  All transaction 
+
+  res.status(200).send({ error: false, message: [] })
+})
 
 
 
 let myfunction = (req, res) => {
-    if (!req.path) {
-      req.path = '/'
-      req.url = '/' + req.url
-    }
-    app(req, res)
+  if (!req.path) {
+    req.path = '/'
+    req.url = '/' + req.url
   }
-  
-  // Expose Express API as a single Cloud Function:
-  module.exports = functions.https.onRequest(myfunction)
+  app(req, res)
+}
+
+// Expose Express API as a single Cloud Function:
+module.exports = functions.https.onRequest(myfunction)
