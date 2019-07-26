@@ -21,10 +21,12 @@ app.use(cookieParser)
 const CreateTransaction = async (Transaction) => {
   TransactionRef.doc().set(Transaction)
     .then((pr) => {
-      res.status(200).send({ error: false })
+      //res.status(200).send({ error: false })
+      return true
     })
     .catch((err) => {
-      res.status(500).send({ error: true, message: err })
+      // res.status(500).send({ error: true, message: err })
+      return false
     })
 }
 
@@ -72,9 +74,6 @@ app.post("/transaction", () => {
   //if Succesful update Stock
 
 })
-
-//app.put('/'()=>{
-//})
 
 app.get('/', (req, res) => {
   //Retreive the Stock and current amounnt
