@@ -77,14 +77,14 @@ var GetStock = function () {
         })*/
 
 
-var SendSms = function (phone) {
+var SendSms = function (phones) {
     // Initialize a service e.g. SMS
     console.log("Tried to send sms")
     //console.log(sms.send(options));
 
     const option = {
-        to: ['+254726504619'],
-        message: "Testing Confirm to inuua That  you are picking cement  20 replying with following code"
+        to: phones,
+        message: "Hi ,there we got offers from you "
     }
     return new Promise(
         function (res, rej) {
@@ -108,6 +108,33 @@ var FindTrans = function (code, phone) {
     console.log(phone + "::" + code)
 }
 
+var SendSingleSms = function (phone, message) {
+    // Initialize a service e.g. SMS
+    console.log("Tried to send Single sms")
+    //console.log(sms.send(options));
+
+    const option = {
+        to: [phone],
+        message: message
+    }
+    return new Promise(
+        function (res, rej) {
+            sms.send(option)
+                .then(function (response) {
+                    console.log(response)
+                    res(response)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    rej(error)
+                })
+        }
+    )
+
+    // Send message and capture the response or error
+
+}
+
 
 
 module.exports.CheckUser = CheckUser
@@ -117,4 +144,5 @@ module.exports.AddTransaction = AddTransaction
 module.exports.UpdateTrans = UpdateTrans
 module.exports.GetStock = GetStock
 module.exports.SendSms = SendSms
+module.exports.SendSingleSms = SendSingleSms
 module.exports.FindTrans = FindTrans
